@@ -8,10 +8,14 @@ workflows:
     scripts:
       - name: Build APK
         script: |
-          flutter packages get
+          if [ -d "study_tracker_flutter" ]; then
+            cd study_tracker_flutter
+          fi
+          sed -i '' 's/intl: ^0.19.0/intl: ^0.18.1/g' pubspec.yaml 2>/dev/null || sed -i 's/intl: ^0.19.0/intl: ^0.18.1/g' pubspec.yaml
+          flutter pub get
           flutter build apk --release --no-tree-shake-icons
     artifacts:
-      - build//outputs//*.apk
+      - "/build//outputs/**/*.apk"
     publishing:
       email:
         recipients:
